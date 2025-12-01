@@ -3,102 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shoe Closet Wireframe</title>
+    <title>Virtual Shoe Closet</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Home Page -->
-    <div id="home-page" class="page active">
-        <header class="header-pink">
-            Header
-        </header>
-
-        <nav class="nav-gray">
-            <button onclick="showPage('home-page')">Home</button>
-            <button onclick="showPage('all-page')">All</button>
-            <button onclick="showPage('insert-page')">Insert</button>
-        </nav>
-
-        <main class="container">
-            <div class="content-box large"></div>
-            <div class="content-box large"></div>
-
-            <div class="divider-gray"></div>
-            <div class="divider-pink"></div>
-
-            <div class="content-box large"></div>
-            <div class="content-box medium"></div>
-        </main>
+    <!-- Landing Page -->
+    <div id="landing-page" class="page active">
+        <div class="landing-content">
+            <h1 class="landing-title">Virtual Shoe Closet</h1>
+            <p class="landing-subtitle">Organize and manage your shoe collection</p>
+            <button class="landing-button" onclick="showPage('all-shoes-page')">Enter Closet</button>
+        </div>
     </div>
 
-    <!-- All Page -->
-    <div id="all-page" class="page">
+    <!-- All Shoes Page -->
+    <div id="all-shoes-page" class="page">
         <header class="header-pink">
-            Header
+            <h2>My Shoe Closet</h2>
         </header>
 
         <nav class="nav-gray">
-            <button onclick="showPage('home-page')">Home</button>
-            <button onclick="showPage('all-page')">All</button>
-            <button onclick="showPage('insert-page')">Insert</button>
+            <button onclick="showPage('landing-page')">Home</button>
+            <button onclick="showPage('all-shoes-page')" class="active">All Shoes</button>
+            <button onclick="showPage('add-shoe-page')">Add Shoe</button>
+            <button onclick="showPage('search-page')">Search</button>
         </nav>
 
         <main class="container">
-            <div class="grid">
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-            </div>
-
-            <div class="divider-gray"></div>
-            <div class="divider-pink"></div>
-
-            <div class="grid">
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
-                <div class="grid-item"></div>
+            <div id="shoe-grid" class="shoe-grid">
+                <!-- Shoes will be dynamically inserted here -->
             </div>
         </main>
     </div>
 
-    <!-- Insert Page -->
-    <div id="insert-page" class="page">
+    <!-- Add Shoe Page -->
+    <div id="add-shoe-page" class="page">
         <header class="header-pink">
-            Header
+            <h2>Add New Shoe</h2>
         </header>
 
         <nav class="nav-gray">
-            <button onclick="showPage('home-page')">Home</button>
-            <button onclick="showPage('all-page')">All</button>
-            <button onclick="showPage('insert-page')">Insert</button>
+            <button onclick="showPage('landing-page')">Home</button>
+            <button onclick="showPage('all-shoes-page')">All Shoes</button>
+            <button onclick="showPage('add-shoe-page')" class="active">Add Shoe</button>
+            <button onclick="showPage('search-page')">Search</button>
         </nav>
 
         <main class="container">
-            <div class="upload-box"></div>
+            <div class="form-container">
+                <div class="upload-box">
+                    <p>Upload Shoe Image</p>
+                    <p class="upload-hint">(Image upload placeholder)</p>
+                </div>
 
-            <div class="input-field"></div>
-            <div class="input-field"></div>
-            <div class="input-field"></div>
+                <form id="add-shoe-form" class="shoe-form">
+                    <div class="form-group">
+                        <label>Brand Name</label>
+                        <input type="text" id="brand-input" class="input-field" placeholder="e.g., Balenciaga">
+                    </div>
 
-            <div class="option-grid">
-                <div class="option-item"></div>
-                <div class="option-item"></div>
-                <div class="option-item"></div>
-                <div class="option-item"></div>
-                <div class="option-item"></div>
-                <div class="option-item"></div>
-                <div class="option-item"></div>
-                <div class="option-item"></div>
-                <div class="option-item"></div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <input type="text" id="color-input" class="input-field" placeholder="e.g., Black">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date Purchased</label>
+                        <input type="text" id="date-input" class="input-field" placeholder="e.g., 2020/01/12">
+                    </div>
+
+                    <div class="color-options">
+                        <p>Quick Color Select</p>
+                        <div class="option-grid">
+                            <div class="option-item" style="background-color: #000;" data-color="Black"></div>
+                            <div class="option-item" style="background-color: #fff; border: 1px solid #999;" data-color="White"></div>
+                            <div class="option-item" style="background-color: #8B4513;" data-color="Brown"></div>
+                            <div class="option-item" style="background-color: #DC143C;" data-color="Red"></div>
+                            <div class="option-item" style="background-color: #FFC0CB;" data-color="Pink"></div>
+                            <div class="option-item" style="background-color: #00FF00;" data-color="Green"></div>
+                            <div class="option-item" style="background-color: #0000FF;" data-color="Blue"></div>
+                            <div class="option-item" style="background-color: #FFFF00;" data-color="Yellow"></div>
+                            <div class="option-item" style="background-color: #808080;" data-color="Gray"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-button">Add to Closet</button>
+                </form>
             </div>
+        </main>
+    </div>
 
-            <div class="divider-pink"></div>
+    <!-- Search Page -->
+    <div id="search-page" class="page">
+        <header class="header-pink">
+            <h2>Search Shoes</h2>
+        </header>
+
+        <nav class="nav-gray">
+            <button onclick="showPage('landing-page')">Home</button>
+            <button onclick="showPage('all-shoes-page')">All Shoes</button>
+            <button onclick="showPage('add-shoe-page')">Add Shoe</button>
+            <button onclick="showPage('search-page')" class="active">Search</button>
+        </nav>
+
+        <main class="container">
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-field" placeholder="Search by brand, color, or date...">
+                <div id="search-results" class="shoe-grid">
+                    <!-- Search results will appear here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Shoe Detail Page -->
+    <div id="detail-page" class="page">
+        <header class="header-pink">
+            <h2>Shoe Details</h2>
+        </header>
+
+        <nav class="nav-gray">
+            <button onclick="showPage('all-shoes-page')">Back to Closet</button>
+        </nav>
+
+        <main class="container">
+            <div class="detail-container">
+                <div class="detail-image">
+                    <div id="detail-shoe-image" class="shoe-detail-img"></div>
+                </div>
+                <div class="detail-info">
+                    <h3 id="detail-brand"></h3>
+                    <p><strong>Color:</strong> <span id="detail-color"></span></p>
+                    <p><strong>Date Purchased:</strong> <span id="detail-date"></span></p>
+                </div>
+            </div>
         </main>
     </div>
 
