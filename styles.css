@@ -1,0 +1,133 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Page visibility control */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Header - Pink */
+.header-pink {
+    background-color: #E8A6A6;
+    padding: 30px;
+    text-align: center;
+    color: #333;
+    font-size: 18px;
+}
+
+/* Navigation - Gray */
+.nav-gray {
+    background-color: #D3D3D3;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-gray button {
+    background-color: #999;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav-gray button:hover {
+    background-color: #777;
+}
+
+/* Main container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Content boxes for Home page */
+.content-box {
+    background-color: #C8C8C8;
+    margin-bottom: 15px;
+    border: 1px solid #aaa;
+}
+
+.content-box.large {
+    height: 200px;
+}
+
+.content-box.medium {
+    height: 100px;
+}
+
+/* Dividers */
+.divider-gray {
+    background-color: #999;
+    height: 30px;
+    margin: 15px 0;
+}
+
+.divider-pink {
+    background-color: #E8A6A6;
+    height: 30px;
+    margin: 15px 0;
+}
+
+/* Grid for All page */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.grid-item {
+    background-color: #C8C8C8;
+    height: 150px;
+    border: 1px solid #aaa;
+}
+
+/* Insert page elements */
+.upload-box {
+    background-color: #C8C8C8;
+    height: 250px;
+    margin-bottom: 20px;
+    border: 2px dashed #999;
+}
+
+.input-field {
+    background-color: #D3D3D3;
+    height: 40px;
+    margin-bottom: 15px;
+    border: 1px solid #aaa;
+}
+
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.option-item {
+    background-color: #C8C8C8;
+    height: 50px;
+    border: 1px solid #aaa;
+}
+
+.option-item:hover {
+    background-color: #B0B0B0;
+    cursor: pointer;
+}

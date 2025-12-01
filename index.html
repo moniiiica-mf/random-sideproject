@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoe Closet Wireframe</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <header class="header-pink">
+            Header
+        </header>
+
+        <nav class="nav-gray">
+            <button onclick="showPage('home-page')">Home</button>
+            <button onclick="showPage('all-page')">All</button>
+            <button onclick="showPage('insert-page')">Insert</button>
+        </nav>
+
+        <main class="container">
+            <div class="content-box large"></div>
+            <div class="content-box large"></div>
+
+            <div class="divider-gray"></div>
+            <div class="divider-pink"></div>
+
+            <div class="content-box large"></div>
+            <div class="content-box medium"></div>
+        </main>
+    </div>
+
+    <!-- All Page -->
+    <div id="all-page" class="page">
+        <header class="header-pink">
+            Header
+        </header>
+
+        <nav class="nav-gray">
+            <button onclick="showPage('home-page')">Home</button>
+            <button onclick="showPage('all-page')">All</button>
+            <button onclick="showPage('insert-page')">Insert</button>
+        </nav>
+
+        <main class="container">
+            <div class="grid">
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+            </div>
+
+            <div class="divider-gray"></div>
+            <div class="divider-pink"></div>
+
+            <div class="grid">
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Insert Page -->
+    <div id="insert-page" class="page">
+        <header class="header-pink">
+            Header
+        </header>
+
+        <nav class="nav-gray">
+            <button onclick="showPage('home-page')">Home</button>
+            <button onclick="showPage('all-page')">All</button>
+            <button onclick="showPage('insert-page')">Insert</button>
+        </nav>
+
+        <main class="container">
+            <div class="upload-box"></div>
+
+            <div class="input-field"></div>
+            <div class="input-field"></div>
+            <div class="input-field"></div>
+
+            <div class="option-grid">
+                <div class="option-item"></div>
+                <div class="option-item"></div>
+                <div class="option-item"></div>
+                <div class="option-item"></div>
+                <div class="option-item"></div>
+                <div class="option-item"></div>
+                <div class="option-item"></div>
+                <div class="option-item"></div>
+                <div class="option-item"></div>
+            </div>
+
+            <div class="divider-pink"></div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
