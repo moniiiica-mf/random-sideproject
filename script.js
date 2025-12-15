@@ -1,9 +1,10 @@
 class Shoe {
-    constructor(id, brand, color, datePurchased) {
+    constructor(id, brand, color, datePurchased, imagePath) {
         this.id = id;
         this.brand = brand;
         this.color = color;
         this.datePurchased = datePurchased;
+        this.imagePath = imagePath;
     }
 
     displayInfo() {
@@ -21,36 +22,36 @@ class ShoeCloset {
     initializeSampleData() {
         // Sample data similar to the Processing version
         const sampleShoes = [
-            new Shoe(1, "Balenciaga", "Black", "2022/01/12"),
-            new Shoe(2, "Balenciaga", "Pink", "2023/02/02"),
-            new Shoe(3, "Balenciaga", "Bright Green", "2019/03/31"),
-            new Shoe(4, "Balenciaga", "White", "2021/01/14"),
-            new Shoe(5, "Balenciaga", "Black", "2023/03/30"),
-            new Shoe(6, "Balenciaga", "Red", "2019/01/29"),
-            new Shoe(7, "Balenciaga", "Black", "2018/11/09"),
-            new Shoe(8, "Balenciaga", "Black and White", "2021/09/30"),
-            new Shoe(9, "Jimmy Choo", "Black", "2019/12/25"),
-            new Shoe(10, "YSL", "Black", "2025/08/16"),
-            new Shoe(11, "YSL", "Green", "2020/07/20"),
-            new Shoe(12, "YSL", "Black", "2024/05/28"),
-            new Shoe(13, "YSL", "Black and White", "2022/04/15"),
-            new Shoe(14, "YSL", "White", "2025/05/08"),
-            new Shoe(15, "YSL", "Black", "2022/01/10"),
-            new Shoe(16, "YSL", "Brown and Black", "2022/05/20"),
-            new Shoe(17, "YSL", "Black", "2025/03/11"),
-            new Shoe(18, "YSL", "Black", "2020/07/26"),
-            new Shoe(19, "Jimmy Choo", "White", "2019/10/10"),
-            new Shoe(20, "Jimmy Choo", "White", "2022/06/23"),
-            new Shoe(21, "Jimmy Choo", "Pink and Silver", "2018/04/28"),
-            new Shoe(22, "Jimmy Choo", "Black", "2021/02/28"),
-            new Shoe(23, "Dior", "Black", "2019/12/17"),
-            new Shoe(24, "Dior", "Black", "2021/03/14"),
-            new Shoe(25, "Dior", "Pink and White", "2021/07/16"),
-            new Shoe(26, "Dior", "White", "2025/08/23"),
-            new Shoe(27, "Dior", "Pink and White", "2018/09/29"),
-            new Shoe(28, "Dior", "Dirty White", "2024/12/22"),
-            new Shoe(29, "Dior", "Black and White", "2021/02/01"),
-            new Shoe(30, "Dior", "Brown", "2022/10/27")
+            new Shoe(1, "Balenciaga", "Black", "2022/01/12", "Balenciaga_Shoe1.png"),
+            new Shoe(2, "Balenciaga", "Pink", "2023/02/02", "Balenciaga_Shoe2.png"),
+            new Shoe(3, "Balenciaga", "Bright Green", "2019/03/31", "Balenciaga_Shoe3.png"),
+            new Shoe(4, "Balenciaga", "White", "2021/01/14", "Balenciaga_Shoe4.png"),
+            new Shoe(5, "Balenciaga", "Black", "2023/03/30", "Balenciaga_Shoe5.png"),
+            new Shoe(6, "Balenciaga", "Red", "2019/01/29", "Balenciaga_Shoe6.png"),
+            new Shoe(7, "Balenciaga", "Black", "2018/11/09", "Balenciaga_Shoe7.png"),
+            new Shoe(8, "Balenciaga", "Black and White", "2021/09/30", "Balenciaga_Shoe8.png"),
+            new Shoe(9, "Jimmy Choo", "Black", "2019/12/25", "JimmyChoo_Shoe1.png"),
+            new Shoe(10, "YSL", "Black", "2025/08/16", "YSL_Shoe1.png"),
+            new Shoe(11, "YSL", "Green", "2020/07/20", "YSL_Shoe2.png"),
+            new Shoe(12, "YSL", "Black", "2024/05/28", "YSL_Shoe3.png"),
+            new Shoe(13, "YSL", "Black and White", "2022/04/15", "YSL_Shoe4.png"),
+            new Shoe(14, "YSL", "White", "2025/05/08", "YSL_Shoe5.png"),
+            new Shoe(15, "YSL", "Black", "2022/01/10", "YSL_Shoe6.png"),
+            new Shoe(16, "YSL", "Brown and Black", "2022/05/20", "YSL_Shoe7.png"),
+            new Shoe(17, "YSL", "Black", "2025/03/11", "YSL_Shoe8.png"),
+            new Shoe(18, "YSL", "Black", "2020/07/26", "YSL_Shoe9.png"),
+            new Shoe(19, "Jimmy Choo", "White", "2019/10/10", "JimmyChoo_Shoe2.png"),
+            new Shoe(20, "Jimmy Choo", "White", "2022/06/23", "JimmyChoo_Shoe3.png"),
+            new Shoe(21, "Jimmy Choo", "Pink and Silver", "2018/04/28", "JimmyChoo_Shoe4.png"),
+            new Shoe(22, "Jimmy Choo", "Black", "2021/02/28", "JimmyChoo_Shoe5.png"),
+            new Shoe(23, "Dior", "Black", "2019/12/17", "Dior_Shoe1.png"),
+            new Shoe(24, "Dior", "Black", "2021/03/14", "Dior_Shoe2.png"),
+            new Shoe(25, "Dior", "Pink and White", "2021/07/16", "Dior_Shoe3.png"),
+            new Shoe(26, "Dior", "White", "2025/08/23", "Dior_Shoe4.png"),
+            new Shoe(27, "Dior", "Pink and White", "2018/09/29", "Dior_Shoe5.png"),
+            new Shoe(28, "Dior", "Dirty White", "2024/12/22", "Dior_Shoe6.png"),
+            new Shoe(29, "Dior", "Black and White", "2021/02/01", "Dior_Shoe7.png"),
+            new Shoe(30, "Dior", "Brown", "2022/10/27", "Dior_Shoe8.png")
           ];
 
         this.shoes = sampleShoes;
@@ -142,7 +143,7 @@ function createShoeCard(shoe) {
     card.onclick = () => showShoeDetail(shoe.id);
 
     card.innerHTML = `
-        <div class="shoe-card-image">Shoe Image</div>
+        <img src="${shoe.imagePath}" alt="${shoe.brand}" class="shoe-card-image">
         <h3>${shoe.brand}</h3>
         <p>Color: ${shoe.color}</p>
         <p>Purchased: ${shoe.datePurchased}</p>
@@ -162,7 +163,7 @@ function showShoeDetail(shoeId) {
     document.getElementById('detail-brand').textContent = shoe.brand;
     document.getElementById('detail-color').textContent = shoe.color;
     document.getElementById('detail-date').textContent = shoe.datePurchased;
-    document.getElementById('detail-shoe-image').textContent = `${shoe.brand} Image`;
+    document.getElementById('detail-shoe-image').innerHTML = `<img src="${shoe.imagePath}" alt="${shoe.brand}" style="width: 100%; height: 100%; object-fit: contain;">`;
 
     // Show detail page
     showPage('detail-page');
