@@ -206,25 +206,59 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Search functionality
+    // Search functionality - IMPROVED VERSION
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
-            const keyword = e.target.value;
-            const results = keyword ? shoeCloset.searchShoes(keyword) : [];
-
+            const keyword = e.target.value.trim();
             const searchResults = document.getElementById('search-results');
             searchResults.innerHTML = '';
 
-            if (keyword && results.length === 0) {
-                searchResults.innerHTML = '<p style="text-align: center; color: #666; margin-top: 40px;">No shoes found</p>';
-            } else if (results.length > 0) {
+            // Show all shoes if search is empty
+            if (keyword === '') {
+                const allShoes = shoeCloset.getAllShoes();
+                allShoes.forEach(shoe => {
+                    const card = createShoeCard(shoe);
+                    searchResults.appendChild(card);
+                });
+                return;
+            }
+
+            // Perform search
+            const results = shoeCloset.searchShoes(keyword);
+
+            // Show results
+            if (results.length === 0) {
+                searchResults.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 40px 0;">
+                        <p style="margin-bottom: 10px;">No shoes found for "${keyword}"</p>
+                        <small>Try searching by brand, color, or date</small>
+                    </div>
+                `;
+            } else {
+                // Show count of results
+                const countDiv = document.createElement('div');
+                countDiv.style.cssText = 'grid-column: 1 / -1; text-align: center; color: #666; padding: 20px 0; font-size: 14px;';
+                countDiv.textContent = `Found ${results.length} shoe${results.length > 1 ? 's' : ''}`;
+                searchResults.appendChild(countDiv);
+
+                // Show shoe cards
                 results.forEach(shoe => {
                     const card = createShoeCard(shoe);
                     searchResults.appendChild(card);
                 });
             }
         });
+
+        // Show all shoes initially when search page loads
+        const initialResults = shoeCloset.getAllShoes();
+        const searchResults = document.getElementById('search-results');
+        if (searchResults && initialResults.length > 0) {
+            initialResults.forEach(shoe => {
+                const card = createShoeCard(shoe);
+                searchResults.appendChild(card);
+            });
+        }
     }
 
     // Initialize first render
