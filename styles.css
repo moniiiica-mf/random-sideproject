@@ -44,7 +44,7 @@ body {
 }
 
 .landing-button {
-    background-color: #E8A6A6;
+    background-color: #ffd174;
     color: white;
     border: none;
     padding: 15px 40px;
@@ -55,18 +55,18 @@ body {
 }
 
 .landing-button:hover {
-    background-color: #D89090;
+    background-color: #ffbc35;
 }
 
-/* Header - Pink */
-.header-pink {
-    background-color: #E8A6A6;
+/* Header - Orange */
+.header-orange {
+    background-color: #ffd174;
     padding: 30px;
     text-align: center;
     color: #333;
 }
 
-.header-pink h2 {
+.header-orange h2 {
     font-size: 28px;
     font-weight: normal;
 }
@@ -129,14 +129,12 @@ body {
 }
 
 .shoe-card-image {
-    background-color: #B0B0B0;
-    height: 100px;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
     margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-    font-size: 12px;
+    background-color: #B0B0B0;
+    border-radius: 3px;
 }
 
 .shoe-card h3 {
@@ -205,7 +203,7 @@ body {
 
 .input-field:focus {
     outline: none;
-    border-color: #E8A6A6;
+    border-color: #ffd174;
 }
 
 .color-options {
@@ -236,7 +234,7 @@ body {
 
 .submit-button {
     width: 100%;
-    background-color: #E8A6A6;
+    background-color: #ffd174;
     color: white;
     border: none;
     padding: 15px;
@@ -247,7 +245,7 @@ body {
 }
 
 .submit-button:hover {
-    background-color: #D89090;
+    background-color: #ffbc35;
 }
 
 /* Search Page */
@@ -267,7 +265,7 @@ body {
 
 .search-field:focus {
     outline: none;
-    border-color: #E8A6A6;
+    border-color: #ffd174;
 }
 
 /* Detail Page */

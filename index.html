@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virtual Shoe Closet</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Landing Page -->
     <div id="landing-page" class="page active">
         <div class="landing-content">
-            <h1 class="landing-title">Virtual Shoe Closet</h1>
-            <p class="landing-subtitle">Organize and manage your shoe collection</p>
+            <h1 class="landing-title">Welcome to your Virtual Shoe Closet</h1>
+            <p class="landing-subtitle">Organize and manage your shoe collection here</p>
             <button class="landing-button" onclick="showPage('all-shoes-page')">Enter Closet</button>
         </div>
     </div>
 
     <!-- All Shoes Page -->
     <div id="all-shoes-page" class="page">
-        <header class="header-pink">
+        <header class="header-orange">
             <h2>My Shoe Closet</h2>
         </header>
 
@@ -30,14 +30,14 @@
 
         <main class="container">
             <div id="shoe-grid" class="shoe-grid">
-                <!-- Shoes will be dynamically inserted here -->
+                <!-- Shoes inserted here -->
             </div>
         </main>
     </div>
 
     <!-- Add Shoe Page -->
     <div id="add-shoe-page" class="page">
-        <header class="header-pink">
+        <header class="header-orange">
             <h2>Add New Shoe</h2>
         </header>
 
@@ -93,7 +93,7 @@
 
     <!-- Search Page -->
     <div id="search-page" class="page">
-        <header class="header-pink">
+        <header class="header-orange">
             <h2>Search Shoes</h2>
         </header>
 
@@ -107,7 +107,7 @@
             <div class="search-container">
                 <input type="text" id="search-input" class="search-field" placeholder="Search by brand, color, or date...">
                 <div id="search-results" class="shoe-grid">
-                    <!-- Search results will appear here -->
+                    <!-- Search results appear -->
                 </div>
             </div>
         </main>
@@ -115,7 +115,7 @@
 
     <!-- Shoe Detail Page -->
     <div id="detail-page" class="page">
-        <header class="header-pink">
+        <header class="header-orange">
             <h2>Shoe Details</h2>
         </header>
 
