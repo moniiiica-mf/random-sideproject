@@ -88,17 +88,6 @@ async function scanAndPurchase() {
     const lastLi = await scrollToLastListItem();
     if (lastLi) {
       lastLi.click();
-
-      // Wait a bit for the item page to load, then click to payment page
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Click the buy/checkout button to go to payment page
-      // Adjust selector based on your actual payment button
-      const checkoutBtn = await waitFor('button[aria-label="Checkout"], button:contains("Buy"), button:contains("Checkout"), .checkout-button', { timeout: 5000 });
-      if (checkoutBtn) {
-        checkoutBtn.click();
-        console.log('Clicked payment button');
-      }
     }
 
     console.log('Scan completed successfully');
