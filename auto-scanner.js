@@ -62,120 +62,263 @@ async function scrollToLastListItem() {
   return lastLi;
 }
 
-// Wait for modal/popup to be dismissed or declined
-async function waitForModalDismiss() {
+// Wait for modal/popup to be dismissed or declined (Ticketmaster-specific)
+async function waitForTicketDecline() {
   return new Promise((resolve) => {
-    console.log('Waiting for modal to be dismissed...');
+    console.log('⏳ Waiting for you to accept or decline this ticket...');
 
-    // Watch for common modal close patterns
-    const checkInterval = setInterval(() => {
-      // Check if modal/dialog is gone (common selectors)
-      const modal = document.querySelector('dialog, [role="dialog"], .modal, [class*="modal"]');
+    let modalCheckInterval;
+    let backButtonObserver;
 
-      if (!modal || modal.style.display === 'none' || !modal.offsetParent) {
-        console.log('Modal dismissed detected');
-        clearInterval(checkInterval);
+    // Ticketmaster common modal/overlay selectors
+    const ticketModalSelectors = [
+      'dialog',
+      '[role="dialog"]',
+      '[role="alertdialog"]',
+      '.modal',
+      '[class*="modal"]',
+      '[class*="Modal"]',
+      '[class*="overlay"]',
+      '[class*="Overlay"]',
+      '[class*="drawer"]',
+      '[class*="Drawer"]',
+      'aside[role="dialog"]'
+    ];
+
+    // Check if modal/overlay is dismissed
+    const checkModalDismissed = () => {
+      const modals = ticketModalSelectors.map(sel => document.querySelector(sel)).filter(Boolean);
+
+      // If no modals found, it's dismissed
+      if (modals.length === 0) return true;
+
+      // Check if all modals are hidden
+      return modals.every(modal => {
+        const style = window.getComputedStyle(modal);
+        return style.display === 'none' ||
+               style.visibility === 'hidden' ||
+               style.opacity === '0' ||
+               !modal.offsetParent;
+      });
+    };
+
+    // Watch for modal dismissal
+    modalCheckInterval = setInterval(() => {
+      if (checkModalDismissed()) {
+        console.log('✓ Ticket declined/dismissed - looking for next ticket...');
+        cleanup();
         resolve();
       }
-    }, 500); // Check every 500ms
+    }, 300); // Check every 300ms for faster response
 
-    // Also listen for ESC key (common way to dismiss)
+    // Watch for "Back" or "No Thanks" button clicks (common on Ticketmaster)
+    const watchForBackButton = () => {
+      const buttonSelectors = [
+        'button[aria-label*="back" i]',
+        'button[aria-label*="close" i]',
+        'button[aria-label*="cancel" i]',
+        'button[data-testid*="back"]',
+        'button[data-testid*="close"]',
+        'button:has-text("No Thanks")',
+        'button:has-text("Back")',
+        'button:has-text("Cancel")',
+        '.close-button',
+        '[class*="close"]',
+        '[class*="back"]'
+      ];
+
+      document.addEventListener('click', (e) => {
+        const clickedElement = e.target.closest('button, a, [role="button"]');
+        if (clickedElement) {
+          const text = clickedElement.textContent.toLowerCase();
+          const ariaLabel = (clickedElement.getAttribute('aria-label') || '').toLowerCase();
+
+          if (text.includes('back') || text.includes('cancel') || text.includes('no thanks') ||
+              ariaLabel.includes('back') || ariaLabel.includes('close') || ariaLabel.includes('cancel')) {
+            console.log('✓ Decline button clicked - waiting for next ticket...');
+            setTimeout(() => {
+              cleanup();
+              resolve();
+            }, 500);
+          }
+        }
+      }, { once: false });
+    };
+
+    watchForBackButton();
+
+    // ESC key handler
     const escHandler = (e) => {
       if (e.key === 'Escape') {
-        console.log('ESC key pressed - modal likely dismissed');
-        clearInterval(checkInterval);
-        document.removeEventListener('keydown', escHandler);
-        resolve();
+        console.log('✓ ESC pressed - ticket declined');
+        setTimeout(() => {
+          cleanup();
+          resolve();
+        }, 500);
       }
     };
     document.addEventListener('keydown', escHandler);
 
-    // Safety timeout (if modal is dismissed but we somehow miss it)
-    setTimeout(() => {
-      console.log('Modal dismiss timeout reached');
-      clearInterval(checkInterval);
+    // Cleanup function
+    const cleanup = () => {
+      if (modalCheckInterval) clearInterval(modalCheckInterval);
       document.removeEventListener('keydown', escHandler);
+    };
+
+    // Safety timeout (60 seconds for Ticketmaster's timer)
+    setTimeout(() => {
+      console.log('⏱️ Ticket timer expired - moving to next');
+      cleanup();
       resolve();
-    }, 30000); // 30 second safety timeout
+    }, 60000);
   });
 }
 
-async function scanAndPurchase() {
+// Set up filters once at the start
+async function setupFilters() {
   try {
-    console.log('Setting up filters...');
+    console.log('🔧 Setting up Ticketmaster filters...');
 
-    // qty
-    const sel = await waitFor("#filter-bar-quantity");
-    sel.value = "1";
-    sel.dispatchEvent(new Event("change", { bubbles: true }));
+    // Wait for page to load
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // min price
-    const el = await waitFor('input[aria-describedby="label-description-min"]');
-
-    el.focus();
-    setNativeValue(el, "500");
-    el.dispatchEvent(new Event("input", { bubbles: true }));
-
-    await new Promise(resolve => {
-      requestAnimationFrame(() => {
-        el.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
-        el.dispatchEvent(new Event("change", { bubbles: true }));
-        el.blur();
-        resolve();
-      });
-    });
-
-    console.log('Scrolling to last item...');
-    const lastLi = await scrollToLastListItem();
-    if (lastLi) {
-      console.log('Clicking on item...');
-      lastLi.click();
-
-      // Wait a moment for modal/popup to appear
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      console.log('Item clicked - waiting for your decision...');
-
-      // Wait for user to decline/dismiss the modal
-      await waitForModalDismiss();
-
-      console.log('Modal dismissed - will scan again shortly');
-      return 'declined';
+    // Quantity filter
+    try {
+      const quantitySelector = await waitFor("#filter-bar-quantity", { timeout: 5000 });
+      quantitySelector.value = "1";
+      quantitySelector.dispatchEvent(new Event("change", { bubbles: true }));
+      console.log('✓ Quantity set to 1');
+    } catch (e) {
+      console.log('⚠️ Quantity filter not found (may not be needed)');
     }
 
-    console.log('Scan completed successfully');
-    return 'success';
+    // Min price filter
+    try {
+      const priceInput = await waitFor('input[aria-describedby="label-description-min"]', { timeout: 5000 });
+      priceInput.focus();
+      setNativeValue(priceInput, "500");
+      priceInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+      await new Promise(resolve => {
+        requestAnimationFrame(() => {
+          priceInput.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+          priceInput.dispatchEvent(new Event("change", { bubbles: true }));
+          priceInput.blur();
+          resolve();
+        });
+      });
+      console.log('✓ Min price set to $500');
+    } catch (e) {
+      console.log('⚠️ Price filter not found (may not be needed)');
+    }
+
+    // Wait for filters to apply
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    console.log('✅ Filters applied successfully!');
+
   } catch (error) {
-    console.log('Scan failed:', error.message);
+    console.log('⚠️ Filter setup had issues:', error.message);
+    console.log('📝 Continuing anyway - filters may not be required');
+  }
+}
+
+// Find and click the next available ticket
+async function findAndClickNextTicket() {
+  try {
+    console.log('🔍 Scanning for next available ticket...');
+
+    // Wait for ticket list to be stable and available
+    const lastLi = await scrollToLastListItem();
+
+    if (lastLi) {
+      // Check if ticket is actually clickable/available
+      const isDisabled = lastLi.hasAttribute('disabled') ||
+                        lastLi.getAttribute('aria-disabled') === 'true' ||
+                        lastLi.classList.contains('disabled');
+
+      if (isDisabled) {
+        console.log('⏳ Last ticket not available yet, waiting...');
+        return 'unavailable';
+      }
+
+      console.log('🎫 Ticket found! Clicking now...');
+      lastLi.click();
+
+      // Wait for ticket details to load
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      console.log('👀 Ticket details opened - review and decide!');
+
+      // Wait for user to accept or decline
+      await waitForTicketDecline();
+
+      console.log('🔄 Ready for next ticket');
+      return 'declined';
+    } else {
+      console.log('❌ No tickets found in list');
+      return 'no_tickets';
+    }
+
+  } catch (error) {
+    console.log('❌ Error finding ticket:', error.message);
     return 'error';
   }
 }
 
-// Main loop with rescan interval
+// Main Ticketmaster auto-scanner loop
 async function startAutoScanner() {
-  const RESCAN_INTERVAL = 2000; // 2 seconds between rescans after decline
-  const ERROR_RETRY_INTERVAL = 10000; // 10 seconds on error
+  console.log('🎟️  TICKETMASTER AUTO-SCANNER STARTED 🎟️');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('📋 How it works:');
+  console.log('  1. Scans for next available ticket');
+  console.log('  2. Clicks and shows you the ticket');
+  console.log('  3. You review and accept/decline');
+  console.log('  4. Automatically finds next ticket');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('');
 
-  console.log('Starting auto-scanner...');
-  console.log('After you decline an item, it will automatically scan for the next one!');
+  // Setup filters once at the start
+  await setupFilters();
+
+  console.log('');
+  console.log('🚀 Starting continuous ticket monitoring...');
+  console.log('');
+
+  let scanCount = 0;
 
   while (true) {
-    console.log(`[${new Date().toLocaleTimeString()}] Running scan...`);
+    scanCount++;
+    console.log(`\n━━━ Scan #${scanCount} [${new Date().toLocaleTimeString()}] ━━━`);
 
-    const result = await scanAndPurchase();
+    const result = await findAndClickNextTicket();
 
     if (result === 'declined') {
-      console.log(`Item declined. Waiting ${RESCAN_INTERVAL / 1000} seconds before next scan...`);
-      await new Promise(resolve => setTimeout(resolve, RESCAN_INTERVAL));
-    } else if (result === 'success') {
-      console.log('Item accepted/purchased! Continuing to scan...');
-      await new Promise(resolve => setTimeout(resolve, RESCAN_INTERVAL));
-    } else {
-      console.log(`Error occurred. Waiting ${ERROR_RETRY_INTERVAL / 1000} seconds before retry...`);
-      await new Promise(resolve => setTimeout(resolve, ERROR_RETRY_INTERVAL));
+      // Ticket was declined, immediately look for next one
+      console.log('⏭️  Moving to next ticket immediately...');
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Brief pause to let UI update
+
+    } else if (result === 'unavailable') {
+      // Ticket not available yet, wait and retry
+      console.log('⏳ Waiting 3 seconds before checking again...');
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+    } else if (result === 'no_tickets') {
+      // No tickets in list, wait longer
+      console.log('⏳ No tickets available. Waiting 5 seconds...');
+      await new Promise(resolve => setTimeout(resolve, 5000));
+
+    } else if (result === 'error') {
+      // Error occurred, wait before retry
+      console.log('⏳ Error occurred. Waiting 10 seconds before retry...');
+      await new Promise(resolve => setTimeout(resolve, 10000));
     }
   }
 }
 
-// Start the scanner
+// Initialize scanner
+console.log('');
+console.log('═══════════════════════════════════════');
+console.log('   TICKETMASTER AUTO-SCANNER v2.0');
+console.log('═══════════════════════════════════════');
+console.log('');
 startAutoScanner();
